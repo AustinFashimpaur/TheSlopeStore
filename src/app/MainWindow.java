@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 public class MainWindow extends JFrame {
+	public static final String databaseURL = "jdbc:derby:SlopesDatabase;create=true";
 
 	private JPanel contentPane;
 
