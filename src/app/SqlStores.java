@@ -7,7 +7,7 @@ package app;
  *
  */
 public class SqlStores {
-
+	
 	/**
 	 * Creates a Stores Table With the columns Id, StoreName, City,
 	 * and State
