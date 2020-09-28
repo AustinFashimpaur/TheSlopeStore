@@ -6,3 +6,4 @@
 *.class
 *.ctrl
 *.lck
+/bin/

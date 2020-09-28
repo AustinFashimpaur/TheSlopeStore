@@ -28,12 +28,29 @@ public class SqlItems {
 	 * @return sql command to insert the Items Table
 	 */
 	public static String insertData() {
-		return "INSERT INTO Stores (ProductName, BrandName, Price, Size)" 
-				+ "VALUES ('The Slope Store', 'Sandy', 'UT'),"
-				+ "('The Slope Store', 'Park City', 'UT')," 
-				+ "('The Slope Store', 'Orem', 'UT')," 
-				+ "('The Slope Store', 'Mammoth Lakes', 'CA'),"
-				+ "('The Slope Store', 'Denver', 'CO')";
+		return "INSERT INTO Items (ProductName, BrandName, Price, Size)" 
+				+ "VALUES ('Snowboard', 'Burton', 299.99, 'L'),"
+				+ "('Snowboard Coat', 'Burton', 129.99, 'M')," 
+				+ "('Snowboard Pants', 'Burton', 89.99, 'M')," 
+				+ "('Snowboard Shoes', 'Burton', 169.99, 'L'),"
+				+ "('Snowboard Bindings', 'Burton', 79.99, 'L')";
 	}
 
+	/**
+	 * Gets info from existing Items table in the database
+	 * @return sql command to retrieve info from current Items table
+	 */
+	public static String getAll() {
+		return "SELECT * FROM Items";
+	}
+	
+	/**
+	 * Drops the current Items Table Currently in the database.
+	 * @return sql Command to drop the Items Table.
+	 */
+	public static String dropTable() {
+		return "DROP TABLE Items";
+	}
+	
 }
+

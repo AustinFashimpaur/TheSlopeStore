@@ -18,7 +18,7 @@ public class SqlStores {
 				+ "ID int not null primary key " 
 				+ "  GENERATED ALWAYS AS IDENTITY"
 				+ "  (START WITH 1, INCREMENT BY 1)," 
-				+ "StoreName varchar(255)," 
+				+ "Name varchar(255)," 
 				+ "City varchar(255),"
 				+ "State varchar(255))";
 	}
