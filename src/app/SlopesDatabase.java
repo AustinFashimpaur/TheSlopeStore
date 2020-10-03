@@ -9,6 +9,8 @@ import java.sql.Statement;
 
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.derby.iapi.sql.PreparedStatement;
+
 /**
  * Houses the database functions for SlopeStoreDatabase
  * @author Trevor Colton & Austin Fashimpaur
@@ -66,17 +68,29 @@ public class SlopesDatabase {
 	}
 	
 	/**
-	 * Inserts a new row into the Items Table
+	 * Inserts a new row into the Items Table and updates Inventory Table with new ID
 	 * @param productName
 	 * @param brandName
 	 * @param price
 	 * @param size
 	 */
-	public static void addItemRow(String productName, String brandName, String price, String size) {
+	public static void addItemRow(String productName, String brandName, String price, String size, String qty, String storeID) {
 		try(Connection connection = DriverManager.getConnection(databaseUrl);
 				Statement statement = connection.createStatement();) {
-			statement.executeUpdate("INSERT INTO Items (ProductName, BrandName, Price, Size)" 
-					+ "VALUES ('" + productName + "', '" + brandName + "', " + price + ", '" + size + "')");
+			String insertItem = "INSERT INTO Items (ProductName, BrandName, Price, Size)" 
+					+ "VALUES ('" + productName + "', '" + brandName + "', " + price + ", '" + size + "')";
+			
+			//Adds row and retrieves newly generated ID
+			java.sql.PreparedStatement ps = connection.prepareStatement(insertItem, Statement.RETURN_GENERATED_KEYS);
+			ps.execute();
+			ResultSet rs = ps.getGeneratedKeys();
+			int temp = 0;
+			if(rs.next()) {
+				temp = rs.getInt(1);
+			}
+			String generatedID = Integer.toString(temp);
+			//Adds row to Inventory table with new Product ID info 
+			statement.executeUpdate("INSERT INTO Inventory " + "VALUES (" + storeID + ", "+ generatedID +", "+ qty +")");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -96,22 +110,39 @@ public class SlopesDatabase {
 	}
 	
 	/**
+	 * Removes the specified row from the Items table
+	 * @param id
+	 */
+	public static void removeInventoryItem(String id) {
+		try(Connection connection = DriverManager.getConnection(databaseUrl);
+				Statement statement = connection.createStatement();) {
+			statement.executeUpdate("DELETE FROM Inventory WHERE ItemID = " + id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * Drops all tables and reinitializes them with data.
 	 * Used for debugging. If error is thrown tables may not exist.
 	 */
 	public static void databaseReset() {
 		try(Connection connection = DriverManager.getConnection(databaseUrl);
 				Statement statement = connection.createStatement();) {
-			//statement.execute(SqlStores.dropTable());
-			//statement.execute(SqlItems.dropTable());
-			//statement.execute(SqlInventory.dropTable());
+			statement.execute(SqlStores.dropTable());
+			statement.execute(SqlItems.dropTable());
+			statement.execute(SqlInventory.dropTable());
 			
 			statement.execute(SqlStores.createTable());
 			statement.execute(SqlItems.createTable());
-			//statement.execute(SqlInventory.createTable());
+			statement.execute(SqlInventory.createTable());
+			
+			statement.execute(SqlInventory.insertData());
+			//statement.execute(SqlInventory.getItemAndStore());
 			
 			statement.execute(SqlStores.insertData());
 			statement.execute(SqlItems.insertData());
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -170,7 +201,7 @@ public class SlopesDatabase {
 		try {
 			int columnCount = metaData.getColumnCount();
 
-			System.out.print("  ");
+			System.out.print("");
 			for (int i = 1; i <= columnCount; i++) {
 				System.out.print(metaData.getColumnLabel(i) + "  ");
 			}

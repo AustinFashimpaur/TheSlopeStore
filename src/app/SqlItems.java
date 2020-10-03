@@ -30,10 +30,15 @@ public class SqlItems {
 	public static String insertData() {
 		return "INSERT INTO Items (ProductName, BrandName, Price, Size)" 
 				+ "VALUES ('Snowboard', 'Burton', 299.99, 'L'),"
-				+ "('Snowboard Coat', 'Burton', 129.99, 'M')," 
-				+ "('Snowboard Pants', 'Burton', 89.99, 'M')," 
+				+ "('Snow Coat', 'Burton', 129.99, 'M')," 
+				+ "('Snow Pants', 'Burton', 89.99, 'M')," 
 				+ "('Snowboard Shoes', 'Burton', 169.99, 'L'),"
-				+ "('Snowboard Bindings', 'Burton', 79.99, 'L')";
+				+ "('Snowboard Bindings', 'Burton', 79.99, 'L'),"
+				+ "('Skis', 'Burton', 349.95, 'M'),"
+				+ "('Snow Coat', 'Burton', 119.99, 'S')," 
+				+ "('Snow Pants', 'Burton', 79.99, 'S')," 
+				+ "('Ski Shoes', 'Burton', 159.99, 'M'),"
+				+ "('Ski Bindings', 'Burton', 89.99, 'M')";
 	}
 
 	/**

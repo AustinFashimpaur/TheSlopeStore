@@ -22,6 +22,8 @@ public class AddPanel extends JDialog {
 	private JTextField brandName;
 	private JTextField price;
 	private JTextField size;
+	private JTextField quantity;
+	private JTextField storeNumber;
 	
 	//private static final String databaseUrl = "jdbc:derby:SlopeStoreDatabase;create=true";
 
@@ -44,7 +46,6 @@ public class AddPanel extends JDialog {
 		
 		JButton btnAdd = createAddBtn();
 		getContentPane().add(btnAdd);
-
 	}
 
 	private JButton createCancelBtn() {
@@ -62,13 +63,17 @@ public class AddPanel extends JDialog {
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(!(productName.getText().trim().isEmpty() && productName.getText().trim().isEmpty() 
-						&& productName.getText().trim().isEmpty() && productName.getText().trim().isEmpty())) {
+				if(!productName.getText().trim().isEmpty() && !brandName.getText().trim().isEmpty() 
+						&& !price.getText().trim().isEmpty() && !size.getText().trim().isEmpty()
+						&& !quantity.getText().trim().isEmpty() && !storeNumber.getText().trim().isEmpty()) {
+					
 					String a = productName.getText();
 					String b = brandName.getText();
 					String c = price.getText().trim();
-					String d = size.getText();
-					SlopesDatabase.addItemRow(a, b, c, d);
+					String d = size.getText().trim();
+					String qty = quantity.getText().trim();
+					String sID = storeNumber.getText().trim();
+					SlopesDatabase.addItemRow(a, b, c, d, qty, sID);
 					dispose();
 				}
 			}
@@ -86,19 +91,27 @@ public class AddPanel extends JDialog {
 		lblSize.setBounds(79, 140, 98, 14);
 		getContentPane().add(lblSize);
 		
-		JLabel lblNewLabel = new JLabel("Brand Name:");
-		lblNewLabel.setBounds(79, 109, 98, 14);
-		getContentPane().add(lblNewLabel);
+		JLabel lblBrandName = new JLabel("Brand Name:");
+		lblBrandName.setBounds(79, 109, 98, 14);
+		getContentPane().add(lblBrandName);
 		
-		JLabel lblNewLabel_1 = new JLabel("Add New Product");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 23));
-		lblNewLabel_1.setBounds(110, 11, 231, 36);
-		getContentPane().add(lblNewLabel_1);
+		JLabel lblTitle = new JLabel("Add New Product");
+		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitle.setFont(new Font("Tahoma", Font.PLAIN, 23));
+		lblTitle.setBounds(110, 11, 231, 36);
+		getContentPane().add(lblTitle);
 		
 		JLabel lblProduct = new JLabel("Product Name:");
 		lblProduct.setBounds(79, 78, 98, 14);
 		getContentPane().add(lblProduct);
+		
+		JLabel lblStoreNum = new JLabel("Store Number: ");
+		lblStoreNum.setBounds(240, 201, 91, 14);
+		getContentPane().add(lblStoreNum);
+		
+		JLabel lblQty = new JLabel("Quantity: ");
+		lblQty.setBounds(79, 201, 97, 14);
+		getContentPane().add(lblQty);
 	}
 
 	private void createTextBoxes() {
@@ -121,5 +134,15 @@ public class AddPanel extends JDialog {
 		size.setBounds(187, 137, 86, 20);
 		getContentPane().add(size);
 		size.setColumns(10);
+		
+		quantity = new JTextField();
+		quantity.setBounds(187, 198, 43, 20);
+		getContentPane().add(quantity);
+		quantity.setColumns(10);
+		
+		storeNumber = new JTextField();
+		storeNumber.setBounds(345, 198, 43, 20);
+		getContentPane().add(storeNumber);
+		storeNumber.setColumns(10);
 	}
 }

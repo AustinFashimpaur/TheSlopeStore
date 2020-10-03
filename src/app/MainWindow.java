@@ -34,7 +34,7 @@ public class MainWindow extends JFrame{
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		//SlopesDatabase.databaseReset();
+		SlopesDatabase.databaseReset();
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -80,7 +80,7 @@ public class MainWindow extends JFrame{
         sp.setSize(425, 117);
         welcomePanel.add(sp);
         
-        JComboBox<?> c1 = createComboBox();
+        JComboBox c1 = createComboBox();
         welcomePanel.add(c1);
   
         // create labels 
@@ -112,13 +112,19 @@ public class MainWindow extends JFrame{
 		return lblLogo;
 	}
 
-	private JComboBox<?> createComboBox() {
+	private JComboBox createComboBox() {
 		// array of string containing the store's city and state.
         String stores[] = SlopesDatabase.getAllStores(); 
   
         //drop down
         // create checkbox 
-        JComboBox<String> c1 = new JComboBox<String>(stores); 
+        JComboBox c1 = new JComboBox(stores); 
+        c1.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent arg0) {
+        		JComboBox jcb = (JComboBox) arg0.getSource();
+        		JOptionPane.showMessageDialog(null, jcb.getSelectedItem().toString());
+        	}
+        });
         c1.setLocation(203, 152);
         c1.setSize(161, 28);
 		return c1;
@@ -146,7 +152,7 @@ public class MainWindow extends JFrame{
         btnUpdate.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		j.setModel(SlopesDatabase.getAllItems());
-        		//SlopesDatabase.databaseReset();
+        		SlopesDatabase.printAllQueryResults(SqlInventory.getAll());
         	}
         });
         btnUpdate.setBounds(171, 417, 89, 23);
@@ -175,6 +181,7 @@ public class MainWindow extends JFrame{
         				int column = 4;
         				String value = j.getModel().getValueAt(row, column).toString();
         				SlopesDatabase.removeItemRow(value);
+        				SlopesDatabase.removeInventoryItem(value);
         				j.setModel(SlopesDatabase.getAllItems());
         			}
         		}else {
