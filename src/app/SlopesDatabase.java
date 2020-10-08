@@ -34,7 +34,7 @@ public class SlopesDatabase {
 			while (rs.next()) {
 				String name = rs.getString("ProductName");
 				String brand = rs.getString("BrandName");
-				String price = "$" + rs.getString("Price");
+				String price = rs.getString("Price");
 				String size = rs.getString("Size");
 				String id = rs.getString("ID");
 				model.addRow(new Object[] {name, brand, size, price, id});
@@ -43,6 +43,48 @@ public class SlopesDatabase {
 			e.printStackTrace();
 		}
 		return model;
+	}
+	
+	/**
+	 * Updates a single item in the table Items with the adjusted values
+	 * @param id
+	 * @param name
+	 * @param brand
+	 * @param price
+	 * @param size
+	 */
+	public static void updateItem(String id, String name, String brand, String price, String size) {
+		try(Connection connection = DriverManager.getConnection(databaseUrl);
+				Statement statement = connection.createStatement();) {
+				
+			String sqlUpdate = "UPDATE Items "
+								+ "SET ProductName = '" + name + "', BrandName = '" + brand + "', Price = " + price + ", Size = '" + size + "' "
+								+ "WHERE ID = " + id;
+			statement.executeUpdate(sqlUpdate);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Updates Inventory with item's storeID and qty
+	 * @param id
+	 * @param qty
+	 * @param store
+	 */
+	public static void updateItemInventory(String id, String qty, String store) {
+		try(Connection connection = DriverManager.getConnection(databaseUrl);
+				Statement statement = connection.createStatement();) {
+				
+			String sqlUpdate = "UPDATE Inventory "
+								+ "SET StoreID = " + store + ", Quantity = " + qty + " "
+								+ "WHERE ItemID = " + id;
+			statement.executeUpdate(sqlUpdate);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**

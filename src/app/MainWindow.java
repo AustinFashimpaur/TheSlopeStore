@@ -98,7 +98,35 @@ public class MainWindow extends JFrame{
         
         JButton btnRemove = createRemoveBtn(j);
         welcomePanel.add(btnRemove);
+        
+        JButton btnEdit = createEditBtn(j);
+        welcomePanel.add(btnEdit);
 
+	}
+
+	private JButton createEditBtn(JTable j) {
+		JButton btnEdit = new JButton("Edit");
+		btnEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!j.getSelectionModel().isSelectionEmpty()) {
+        				int row = j.getSelectedRow();
+        				int column = 4;
+        				String id = j.getModel().getValueAt(row, column).toString();
+        				String name = j.getModel().getValueAt(row, 0).toString();
+        				String brand = j.getModel().getValueAt(row, 1).toString();
+        				String size = j.getModel().getValueAt(row, 2).toString();
+        				String price = j.getModel().getValueAt(row, 3).toString();
+        				new EditPanel(MainWindow.this, id, name, brand, size, price);
+        				j.setModel(SlopesDatabase.getAllItems());
+        			
+        		}else {
+        			msgboxError("You must have an item selected from the table.");
+        			
+        		}
+			}
+		});
+        btnEdit.setBounds(285, 361, 117, 29);
+		return btnEdit;
 	}
 
 	private JLabel createStoreLogo(JPanel welcomePanel) {
