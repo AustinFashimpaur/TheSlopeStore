@@ -27,10 +27,14 @@ public class SqlInventory {
 	}
 	
 	public static String getItemAndStore() {
-		return "SELECT Items.ProductName, Items.BrandName, Items.Price, Items.Size, Stores.City, Stores.State"
-				+ "FROM ((Items "
-				+ "INNER JOIN Inventory ON Items.ID = Inventory.StoreID)"
-				+ "INNER JOIN Stores ON Inventory.ItemID = Stores.ID) ";
+		return "SELECT ProductName, BrandName, Price, Size, Quantity FROM Items AS c "
+				   + "INNER JOIN "
+				   + "Inventory AS o "
+				   + "ON c.ID = o.ItemID "
+				   + "LEFT JOIN "
+				   + "Stores AS s "
+				   + "ON o.StoreID = s.ID "
+				   + "WHERE o.StoreID=2";
 	}
 	
 	/**
