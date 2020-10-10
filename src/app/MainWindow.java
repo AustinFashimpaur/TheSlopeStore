@@ -19,6 +19,7 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.awt.event.ActionEvent;
 /**
  * GUI for the database application
@@ -123,6 +124,7 @@ public class MainWindow extends JFrame{
         	public void actionPerformed(ActionEvent arg0) {
         		JComboBox jcb = (JComboBox) arg0.getSource();
         		JOptionPane.showMessageDialog(null, jcb.getSelectedItem().toString());
+        		System.out.println(jcb.getSelectedItem());
         	}
         });
         c1.setLocation(203, 152);
