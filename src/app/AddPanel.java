@@ -66,15 +66,17 @@ public class AddPanel extends JDialog {
 				if(!productName.getText().trim().isEmpty() && !brandName.getText().trim().isEmpty() 
 						&& !price.getText().trim().isEmpty() && !size.getText().trim().isEmpty()
 						&& !quantity.getText().trim().isEmpty() && !storeNumber.getText().trim().isEmpty()) {
-					
-					String a = productName.getText();
-					String b = brandName.getText();
-					String c = price.getText().trim();
-					String d = size.getText().trim();
-					String qty = quantity.getText().trim();
-					String sID = storeNumber.getText().trim();
-					SlopesDatabase.addItemRow(a, b, c, d, qty, sID);
-					dispose();
+					int storeInt = Integer.parseInt(storeNumber.getText().trim());
+					if (storeInt <= 5 && storeInt >= 1) {
+						String a = productName.getText();
+						String b = brandName.getText();
+						String c = price.getText().trim();
+						String d = size.getText().trim();
+						String qty = quantity.getText().trim();
+						String sID = storeNumber.getText().trim();
+						SlopesDatabase.addItemRow(a, b, c, d, qty, sID);
+						dispose();
+					}
 				}
 			}
 		});

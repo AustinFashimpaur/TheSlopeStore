@@ -40,7 +40,7 @@ public class SqlItems {
 				+ "('Ski Shoes', 'Burton', 159.99, 'M'),"
 				+ "('Ski Bindings', 'Burton', 89.99, 'M')";
 	}
-
+	
 	/**
 	 * Gets info from existing Items table in the database
 	 * @return sql command to retrieve info from current Items table

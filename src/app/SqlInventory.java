@@ -8,14 +8,15 @@ public class SqlInventory {
 	 */
 	public static String createTable() {
 		return "CREATE TABLE Inventory (" 
-				+ "StoreID int," 
 				+ "ItemID int," 
+				+ "StoreID int," 
 				+ "Quantity int)";
 	}
 	
 	public static String insertData() {
 		return "INSERT INTO Inventory (ItemID, StoreID, Quantity)"
-				+ "VALUES (100001, 1, 10),"
+				+ "VALUES (100000, 5, 10),"
+				+ "(100001, 1, 10),"
 				+ "(100002, 2, 10),"
 				+ "(100003, 2, 10),"
 				+ "(100004, 1, 10),"

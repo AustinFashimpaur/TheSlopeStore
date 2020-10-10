@@ -45,6 +45,30 @@ public class SlopesDatabase {
 		return model;
 	}
 	
+	public static DefaultTableModel sortByColumn(String column) {
+		DefaultTableModel model = new DefaultTableModel(new String[] {"Name", "Brand", "Size", "Price", "Item ID"}, 0);
+		try(Connection connection = DriverManager.getConnection(databaseUrl);
+				Statement statement = connection.createStatement();) {
+			
+			String sql = "SELECT * FROM Items "
+					+ "ORDER BY " + column + " ASC";
+			//fill model with items from Item table
+			ResultSet rs = statement.executeQuery(sql);
+			
+			while (rs.next()) {
+				String name = rs.getString("ProductName");
+				String brand = rs.getString("BrandName");
+				String price = rs.getString("Price");
+				String size = rs.getString("Size");
+				String id = rs.getString("ID");
+				model.addRow(new Object[] {name, brand, size, price, id});
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return model;
+	}
+	
 	/**
 	 * Updates a single item in the table Items with the adjusted values
 	 * @param id
@@ -107,6 +131,28 @@ public class SlopesDatabase {
 			e.printStackTrace();
 		}
 		return stores;
+	}
+	
+	/**
+	 * Retrieves the quantity and store values of a specific item 
+	 * from Table Inventory and returns them in an array
+	 * @param id Item ID
+	 * @return Array with qty and store number
+	 */
+	public static String[] getItemQtyAndStore(String id) {
+		String[] qtyStore = new String [2];
+		try(Connection connection = DriverManager.getConnection(databaseUrl);
+				Statement statement = connection.createStatement();) {
+			String sql = "SELECT  * FROM Inventory WHERE ItemID = " + id;
+			ResultSet rs = statement.executeQuery(sql);
+			while(rs.next()) {
+				qtyStore[0] = rs.getString("Quantity");
+				qtyStore[1] = rs.getString("StoreID");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return qtyStore;
 	}
 	
 	/**

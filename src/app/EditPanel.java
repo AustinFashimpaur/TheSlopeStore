@@ -29,6 +29,8 @@ public class EditPanel extends JDialog {
 	private String brand;
 	private String size1;
 	private String price1;
+	private String quantity1;
+	private String store;
 	
 	//private static final String databaseUrl = "jdbc:derby:SlopeStoreDatabase;create=true";
 
@@ -39,13 +41,15 @@ public class EditPanel extends JDialog {
 	 * @param brand 
 	 * @param name 
 	 */
-	public EditPanel(Frame owner, String id, String name, String brand, String size1, String price1) {
+	public EditPanel(Frame owner, String id, String name, String brand, String size1, String price1, String quantity1, String store) {
 		super(owner);
 		this.id = id;
 		this.name = name;
 		this.brand = brand;
 		this.size1 = size1;
 		this.price1 = price1;
+		this.quantity1 = quantity1;
+		this.store = store;
 		
 		setBounds(100, 100, 500, 300);
 		setVisible(true);
@@ -59,7 +63,7 @@ public class EditPanel extends JDialog {
 		JButton btnCancel = createCancelBtn();
 		getContentPane().add(btnCancel);
 		
-		JButton btnAdd = createAddBtn();
+		JButton btnAdd = createSaveBtn();
 		getContentPane().add(btnAdd);
 	}
 
@@ -74,23 +78,25 @@ public class EditPanel extends JDialog {
 		return btnCancel;
 	}
 
-	private JButton createAddBtn() {
+	private JButton createSaveBtn() {
 		JButton btnSave = new JButton("Save");
 		btnSave.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!productName.getText().trim().isEmpty() && !brandName.getText().trim().isEmpty() 
 						&& !price.getText().trim().isEmpty() && !size.getText().trim().isEmpty()
 						&& !quantity.getText().trim().isEmpty() && !storeNumber.getText().trim().isEmpty()) {
-					
-					String name = productName.getText();
-					String brand = brandName.getText();
-					String p = price.getText().trim();
-					String s = size.getText().trim();
-					String qty = quantity.getText().trim();
-					String sID = storeNumber.getText().trim();
-					SlopesDatabase.updateItem(id, name, brand, p, s);
-					SlopesDatabase.updateItemInventory(id, qty, sID);
-					dispose();
+					int storeInt = Integer.parseInt(storeNumber.getText().trim());
+					if (storeInt <= 5 && storeInt >= 1) {
+						String name = productName.getText();
+						String brand = brandName.getText();
+						String p = price.getText().trim();
+						String s = size.getText().trim();
+						String qty = quantity.getText().trim();
+						String sID = storeNumber.getText().trim();
+						SlopesDatabase.updateItem(id, name, brand, p, s);
+						SlopesDatabase.updateItemInventory(id, qty, sID);
+						dispose();
+					}
 				}
 			}
 		});
@@ -157,11 +163,13 @@ public class EditPanel extends JDialog {
 		
 		quantity = new JTextField();
 		quantity.setBounds(187, 198, 43, 20);
+		quantity.setText(quantity1);
 		getContentPane().add(quantity);
 		quantity.setColumns(10);
 		
 		storeNumber = new JTextField();
 		storeNumber.setBounds(357, 198, 43, 20);
+		storeNumber.setText(store);
 		getContentPane().add(storeNumber);
 		storeNumber.setColumns(10);
 	}
