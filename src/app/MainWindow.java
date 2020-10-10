@@ -3,6 +3,8 @@ package app;
 import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.Image;
+
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,8 +21,8 @@ import javax.swing.JComboBox;
 import javax.swing.JDialog;
 
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import java.awt.event.ActionEvent;
+import javax.swing.JRadioButton;
 /**
  * GUI for the database application
  * @author Trevor Colton and Austin Fashimpaur
@@ -54,19 +56,19 @@ public class MainWindow extends JFrame{
 	 */
 	public MainWindow() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 718, 575);
+		setBounds(100, 100, 464, 576);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(0, 0, 712, 547);
+		layeredPane.setBounds(0, 0, 448, 537);
 		contentPane.add(layeredPane);
 		
 		//welcome panel, consider this the main JPanel for the time being
 		JPanel welcomePanel = new JPanel();
-		welcomePanel.setBounds(0, 0, 706, 541);
+		welcomePanel.setBounds(0, 0, 450, 536);
 		layeredPane.add(welcomePanel);
 		
 		JLabel lblLogo = createStoreLogo(welcomePanel);
@@ -78,10 +80,10 @@ public class MainWindow extends JFrame{
         // adding it to JScrollPane 
         JScrollPane sp = new JScrollPane(j); 
         sp.setLocation(10, 190);
-        sp.setSize(690, 246);
+        sp.setSize(432, 221);
         welcomePanel.add(sp);
         
-        JComboBox c1 = createComboBox();
+        JComboBox<?> c1 = createComboBox();
         welcomePanel.add(c1);
   
         // create labels 
@@ -102,6 +104,38 @@ public class MainWindow extends JFrame{
         
         JButton btnEdit = createEditBtn(j);
         welcomePanel.add(btnEdit);
+        
+        JRadioButton rdbtnSortName = new JRadioButton("Sort by name");
+        rdbtnSortName.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					j.setModel(SlopesDatabase.sortByColumn("ProductName"));
+				}
+			});
+        rdbtnSortName.setBounds(10, 418, 109, 23);
+        welcomePanel.add(rdbtnSortName);
+        
+        JRadioButton rdbtnSortBrand = new JRadioButton("Sort by Brand");
+        rdbtnSortBrand.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					j.setModel(SlopesDatabase.sortByColumn("BrandName"));
+				}
+			});
+        rdbtnSortBrand.setBounds(173, 418, 109, 23);
+        welcomePanel.add(rdbtnSortBrand);
+        
+        JRadioButton rdbtnSortPrice = new JRadioButton("Sort by price");
+        rdbtnSortPrice.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					j.setModel(SlopesDatabase.sortByColumn("Price"));
+				}
+			});
+        rdbtnSortPrice.setBounds(324, 418, 109, 23);
+        welcomePanel.add(rdbtnSortPrice);
+        
+        ButtonGroup group = new ButtonGroup();
+        group.add(rdbtnSortName);
+        group.add(rdbtnSortBrand);
+        group.add(rdbtnSortPrice);
 
 	}
 
@@ -117,7 +151,8 @@ public class MainWindow extends JFrame{
         				String brand = j.getModel().getValueAt(row, 1).toString();
         				String size = j.getModel().getValueAt(row, 2).toString();
         				String price = j.getModel().getValueAt(row, 3).toString();
-        				new EditPanel(MainWindow.this, id, name, brand, size, price);
+        				String[] qtyStore = SlopesDatabase.getItemQtyAndStore(id);
+        				new EditPanel(MainWindow.this, id, name, brand, size, price, qtyStore[0], qtyStore[1]);
         				j.setModel(SlopesDatabase.getAllItems());
         			
         		}else {
@@ -126,7 +161,7 @@ public class MainWindow extends JFrame{
         		}
 			}
 		});
-        btnEdit.setBounds(431, 459, 117, 29);
+        btnEdit.setBounds(324, 459, 117, 29);
 		return btnEdit;
 	}
 
@@ -141,18 +176,17 @@ public class MainWindow extends JFrame{
 		return lblLogo;
 	}
 
-	private JComboBox createComboBox() {
+	private JComboBox<?> createComboBox() {
 		// array of string containing the store's city and state.
         String stores[] = SlopesDatabase.getAllStores(); 
   
         //drop down
         // create checkbox 
-        JComboBox c1 = new JComboBox(stores); 
+        JComboBox<?> c1 = new JComboBox(stores); 
         c1.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		JComboBox jcb = (JComboBox) arg0.getSource();
+        		JComboBox<?> jcb = (JComboBox<?>) arg0.getSource();
         		JOptionPane.showMessageDialog(null, jcb.getSelectedItem().toString());
-        		System.out.println(jcb.getSelectedItem());
         	}
         });
         c1.setLocation(203, 152);
@@ -182,10 +216,9 @@ public class MainWindow extends JFrame{
         btnUpdate.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		j.setModel(SlopesDatabase.getAllItems());
-        		SlopesDatabase.printAllQueryResults(SqlInventory.getAll());
         	}
         });
-        btnUpdate.setBounds(324, 512, 89, 23);
+        btnUpdate.setBounds(173, 507, 89, 23);
 		return btnUpdate;
 	}
 
@@ -196,7 +229,7 @@ public class MainWindow extends JFrame{
         		new AddPanel(MainWindow.this);
         	}
         });
-        btnAddItem.setBounds(324, 462, 89, 23);
+        btnAddItem.setBounds(173, 462, 89, 23);
 		return btnAddItem;
 	}
 
@@ -220,7 +253,7 @@ public class MainWindow extends JFrame{
         		}
         	}
         });
-        btnRemove.setBounds(173, 462, 111, 23);
+        btnRemove.setBounds(10, 462, 111, 23);
 		return btnRemove;
 	}
 	
