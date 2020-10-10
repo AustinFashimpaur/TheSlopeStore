@@ -182,7 +182,7 @@ public class MainWindow extends JFrame{
   
         //drop down
         // create checkbox 
-        JComboBox<?> c1 = new JComboBox(stores); 
+        JComboBox<?> c1 = new JComboBox<>(stores); 
         c1.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		JComboBox<?> jcb = (JComboBox<?>) arg0.getSource();
