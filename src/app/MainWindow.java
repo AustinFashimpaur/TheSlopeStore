@@ -54,19 +54,19 @@ public class MainWindow extends JFrame{
 	 */
 	public MainWindow() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 460, 500);
+		setBounds(100, 100, 718, 575);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(0, 0, 445, 462);
+		layeredPane.setBounds(0, 0, 712, 547);
 		contentPane.add(layeredPane);
 		
 		//welcome panel, consider this the main JPanel for the time being
 		JPanel welcomePanel = new JPanel();
-		welcomePanel.setBounds(0, 0, 435, 451);
+		welcomePanel.setBounds(0, 0, 706, 541);
 		layeredPane.add(welcomePanel);
 		
 		JLabel lblLogo = createStoreLogo(welcomePanel);
@@ -78,7 +78,7 @@ public class MainWindow extends JFrame{
         // adding it to JScrollPane 
         JScrollPane sp = new JScrollPane(j); 
         sp.setLocation(10, 190);
-        sp.setSize(425, 117);
+        sp.setSize(690, 246);
         welcomePanel.add(sp);
         
         JComboBox c1 = createComboBox();
@@ -99,7 +99,35 @@ public class MainWindow extends JFrame{
         
         JButton btnRemove = createRemoveBtn(j);
         welcomePanel.add(btnRemove);
+        
+        JButton btnEdit = createEditBtn(j);
+        welcomePanel.add(btnEdit);
 
+	}
+
+	private JButton createEditBtn(JTable j) {
+		JButton btnEdit = new JButton("Edit");
+		btnEdit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!j.getSelectionModel().isSelectionEmpty()) {
+        				int row = j.getSelectedRow();
+        				int column = 4;
+        				String id = j.getModel().getValueAt(row, column).toString();
+        				String name = j.getModel().getValueAt(row, 0).toString();
+        				String brand = j.getModel().getValueAt(row, 1).toString();
+        				String size = j.getModel().getValueAt(row, 2).toString();
+        				String price = j.getModel().getValueAt(row, 3).toString();
+        				new EditPanel(MainWindow.this, id, name, brand, size, price);
+        				j.setModel(SlopesDatabase.getAllItems());
+        			
+        		}else {
+        			msgboxError("You must have an item selected from the table.");
+        			
+        		}
+			}
+		});
+        btnEdit.setBounds(431, 459, 117, 29);
+		return btnEdit;
 	}
 
 	private JLabel createStoreLogo(JPanel welcomePanel) {
@@ -157,7 +185,7 @@ public class MainWindow extends JFrame{
         		SlopesDatabase.printAllQueryResults(SqlInventory.getAll());
         	}
         });
-        btnUpdate.setBounds(171, 417, 89, 23);
+        btnUpdate.setBounds(324, 512, 89, 23);
 		return btnUpdate;
 	}
 
@@ -168,7 +196,7 @@ public class MainWindow extends JFrame{
         		new AddPanel(MainWindow.this);
         	}
         });
-        btnAddItem.setBounds(171, 364, 89, 23);
+        btnAddItem.setBounds(324, 462, 89, 23);
 		return btnAddItem;
 	}
 
@@ -192,7 +220,7 @@ public class MainWindow extends JFrame{
         		}
         	}
         });
-        btnRemove.setBounds(36, 364, 111, 23);
+        btnRemove.setBounds(173, 462, 111, 23);
 		return btnRemove;
 	}
 	
