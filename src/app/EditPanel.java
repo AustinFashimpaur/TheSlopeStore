@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 /**
- * Adds a new row to the SQL table Items based on user input
+ * Edits existing information in the Items and Inventory sql tables.
  * @author Trevor Colton & Austin Fashimpaur
  *
  */

@@ -81,10 +81,10 @@ public class MainWindow extends JFrame{
         // adding it to JScrollPane 
         JScrollPane sp = new JScrollPane(j); 
         sp.setLocation(10, 190);
-        sp.setSize(548, 221);
+        sp.setSize(564, 221);
         welcomePanel.add(sp);
         
-        JComboBox c1 = createComboBox();
+        JComboBox<?> c1 = createComboBox();
         welcomePanel.add(c1);
   
         // create labels 
@@ -154,7 +154,6 @@ public class MainWindow extends JFrame{
         				String price = j.getModel().getValueAt(row, 3).toString();
         				String[] qtyStore = SlopesDatabase.getItemQtyAndStore(id);
         				new EditPanel(MainWindow.this, id, name, brand, size, price, qtyStore[0], qtyStore[1]);
-        				j.setModel(SlopesDatabase.getAllItems());
         			
         		}else {
         			msgboxError("You must have an item selected from the table.");
@@ -183,10 +182,10 @@ public class MainWindow extends JFrame{
   
         //drop down
         // create checkbox 
-        JComboBox c1 = new JComboBox(stores); 
+        JComboBox<?> c1 = new JComboBox<>(stores); 
         c1.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		JComboBox jcb = (JComboBox) arg0.getSource();
+        		JComboBox<?> jcb = (JComboBox<?>) arg0.getSource();
         		
         		switch(jcb.getSelectedItem().toString()) {
         		  case "Sandy, UT":

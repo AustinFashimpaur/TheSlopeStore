@@ -10,8 +10,6 @@ import java.sql.Statement;
 
 import javax.swing.table.DefaultTableModel;
 
-import org.apache.derby.iapi.sql.PreparedStatement;
-
 /**
  * Houses the database functions for SlopeStoreDatabase
  * @author Trevor Colton & Austin Fashimpaur
@@ -23,7 +21,7 @@ public class SlopesDatabase {
 	
 	/**
 	 * Retrieves all items from the Item SQL table and adds them to a TableModel to be displayed on a JTable
-	 * @return Updated Table Model HERE HERE HERE HERE HERE HERE HERE HERE HERE 
+	 * @return Updated Table Model 
 	 */
 	public static DefaultTableModel getAllItems() {
 		DefaultTableModel model = new DefaultTableModel(new String[] {"Name", "Brand", "Size", "Price", "Item ID"}, 0);
@@ -46,6 +44,11 @@ public class SlopesDatabase {
 		return model;
 	}
 	
+	/**
+	 * Sorts Item table by specified column and re-populates the JTable
+	 * @param column
+	 * @return
+	 */
 	public static DefaultTableModel sortByColumn(String column) {
 		DefaultTableModel model = new DefaultTableModel(new String[] {"Name", "Brand", "Size", "Price", "Item ID"}, 0);
 		try(Connection connection = DriverManager.getConnection(databaseUrl);
@@ -191,7 +194,7 @@ public class SlopesDatabase {
 	 * @return filtered table model
 	 */
 	public static DefaultTableModel filterByStore(int storeNumber) {
-		DefaultTableModel model = new DefaultTableModel(new String[] {"Name", "Brand", "Size", "Price", "Quantity"}, 0);
+		DefaultTableModel model = new DefaultTableModel(new String[] {"Name", "Brand", "Size", "Price","Item ID", "Quantity"}, 0);
 		try(Connection connection = DriverManager.getConnection(databaseUrl);
 				Statement statement = connection.createStatement();) {
 			//fill table with join statement from SqlInventory, filtered by store number supplied by MainWindow
@@ -202,8 +205,9 @@ public class SlopesDatabase {
 				String brand = rs.getString("BrandName");
 				String price = rs.getString("Price");
 				String size = rs.getString("Size");
+				String id = rs.getString("ItemID");
 				String quantity = rs.getString("Quantity");
-				model.addRow(new Object[] {name, brand, size, price, quantity});
+				model.addRow(new Object[] {name, brand, size, price, id, quantity});
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -244,9 +248,6 @@ public class SlopesDatabase {
 	public static void databaseInit() {
 		try(Connection connection = DriverManager.getConnection(databaseUrl);
 				Statement statement = connection.createStatement();) {
-			statement.execute(SqlStores.dropTable());
-			statement.execute(SqlItems.dropTable());
-			statement.execute(SqlInventory.dropTable());
 			if(!isTableExist("Stores")) {
 			statement.execute(SqlStores.createTable());
 			statement.execute(SqlStores.insertData());
