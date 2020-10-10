@@ -15,7 +15,8 @@ public class SqlInventory {
 	
 	public static String insertData() {
 		return "INSERT INTO Inventory (ItemID, StoreID, Quantity)"
-				+ "VALUES (100001, 1, 10),"
+				+ "VALUES (100000, 1, 10),"
+				+ "(100001, 2, 12),"
 				+ "(100002, 2, 12),"
 				+ "(100003, 2, 17),"
 				+ "(100004, 1, 6),"

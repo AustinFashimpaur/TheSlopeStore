@@ -46,6 +46,13 @@ public class SqlItems {
 				+ "('Speed Ski Boots', 'Rossignol', 179.99, 'M'),"
 				+ "('S Pro 120 Ski Boots', 'Salomon', 454.99, 'M'),"
 				+ "('Speed Machine 130 Ski Boots', 'Nordica', 489.99, 'M'),"
+				+ "('GTX Snow Pants', 'Spyder', 129.99, 'S'),"
+				+ "('SLICE Ski Bib', '686', 299.99, 'M'),"
+				+ "('Ventrix Fleece Sweater', 'The North Face', 99.99, 'M')," 
+				+ "('Respirator Mid-Layer Hoodie', 'The North Face', 229.99, 'S')," 
+				+ "('Flight Jacket', 'Kuhl', 179.99, 'M'),"
+				+ "('Relolvr Pants', 'Kuhl', 154.99, 'M'),"
+				+ "('Voyagr Rain Jacket', 'Kuhl', 189.99, 'M'),"
 				+ "('Lab Shift Ski Bindings', 'Salomon', 469.99, 'M')";
 	}
 	
