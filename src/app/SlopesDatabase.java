@@ -1,6 +1,7 @@
 package app;
 
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -22,7 +23,7 @@ public class SlopesDatabase {
 	
 	/**
 	 * Retrieves all items from the Item SQL table and adds them to a TableModel to be displayed on a JTable
-	 * @return Updated Table Model
+	 * @return Updated Table Model HERE HERE HERE HERE HERE HERE HERE HERE HERE 
 	 */
 	public static DefaultTableModel getAllItems() {
 		DefaultTableModel model = new DefaultTableModel(new String[] {"Name", "Brand", "Size", "Price", "Item ID"}, 0);
@@ -185,6 +186,32 @@ public class SlopesDatabase {
 	}
 	
 	/**
+	 * Updates table by replacing item ID with quantity column and filters by supplied store number
+	 * @param storeNumber, auto incremented and can be found in SqlStores
+	 * @return filtered table model
+	 */
+	public static DefaultTableModel filterByStore(int storeNumber) {
+		DefaultTableModel model = new DefaultTableModel(new String[] {"Name", "Brand", "Size", "Price", "Quantity"}, 0);
+		try(Connection connection = DriverManager.getConnection(databaseUrl);
+				Statement statement = connection.createStatement();) {
+			//fill table with join statement from SqlInventory, filtered by store number supplied by MainWindow
+			ResultSet rs = statement.executeQuery(SqlInventory.getItemAndStore(storeNumber));
+			
+			while (rs.next()) {
+				String name = rs.getString("ProductName");
+				String brand = rs.getString("BrandName");
+				String price = rs.getString("Price");
+				String size = rs.getString("Size");
+				String quantity = rs.getString("Quantity");
+				model.addRow(new Object[] {name, brand, size, price, quantity});
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return model;
+	}
+	
+	/**
 	 * Removes the specified row from the Items table
 	 * @param id
 	 */
@@ -210,30 +237,65 @@ public class SlopesDatabase {
 		}
 	}
 	
-	/**
-	 * Drops all tables and reinitializes them with data.
-	 * Used for debugging. If error is thrown tables may not exist.
+	/*
+	 * Used to initialize the database tables with data if
+	 * they do not exist.
 	 */
-	public static void databaseReset() {
+	public static void databaseInit() {
 		try(Connection connection = DriverManager.getConnection(databaseUrl);
 				Statement statement = connection.createStatement();) {
 			statement.execute(SqlStores.dropTable());
 			statement.execute(SqlItems.dropTable());
 			statement.execute(SqlInventory.dropTable());
-			
+			if(!isTableExist("Stores")) {
 			statement.execute(SqlStores.createTable());
-			statement.execute(SqlItems.createTable());
-			statement.execute(SqlInventory.createTable());
-			
-			statement.execute(SqlInventory.insertData());
-			//statement.execute(SqlInventory.getItemAndStore());
-			
 			statement.execute(SqlStores.insertData());
-			statement.execute(SqlItems.insertData());
+			}
 			
+			if(!isTableExist("Items")) {
+			statement.execute(SqlItems.createTable());
+			statement.execute(SqlItems.insertData());
+			}
+			
+			if(!isTableExist("Inventory")) {
+			statement.execute(SqlInventory.createTable());
+			statement.execute(SqlInventory.insertData());
+			}
+
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	/**
+	 * Checks to see if supplied table exists and returns boolean
+	 * @param sTablename string of table name
+	 * @return if table exists or not
+	 * @throws SQLException
+	 */
+	public static boolean isTableExist(String sTablename) throws SQLException{
+		try(Connection connection = DriverManager.getConnection(databaseUrl);
+				Statement statement = connection.createStatement();) {
+	        DatabaseMetaData dbmd = connection.getMetaData();
+	        ResultSet rs = dbmd.getTables(null, null, sTablename.toUpperCase(),null);
+	        
+	        if(rs.next())
+	        {
+	        	System.out.println(sTablename + " exists, using pre-existing table.");
+	            return true;
+	        }
+	        else
+	        {
+	        	System.out.println(sTablename + " does not exist, creating...");
+	            return false;
+	        }
+	        
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
 		}
 	}
 	

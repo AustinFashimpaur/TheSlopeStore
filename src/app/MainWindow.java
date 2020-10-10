@@ -32,12 +32,13 @@ import javax.swing.JRadioButton;
 public class MainWindow extends JFrame{
 	//graphics variables
 	private JPanel contentPane;
+	private JTable j;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		SlopesDatabase.databaseReset();
+		SlopesDatabase.databaseInit();
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -56,39 +57,39 @@ public class MainWindow extends JFrame{
 	 */
 	public MainWindow() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 464, 576);
+		setBounds(100, 100, 600, 581);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
 		JLayeredPane layeredPane = new JLayeredPane();
-		layeredPane.setBounds(0, 0, 448, 537);
+		layeredPane.setBounds(0, 0, 584, 542);
 		contentPane.add(layeredPane);
 		
 		//welcome panel, consider this the main JPanel for the time being
 		JPanel welcomePanel = new JPanel();
-		welcomePanel.setBounds(0, 0, 450, 536);
+		welcomePanel.setBounds(0, 0, 584, 542);
 		layeredPane.add(welcomePanel);
 		
 		JLabel lblLogo = createStoreLogo(welcomePanel);
 		welcomePanel.add(lblLogo);
   
         // Initializing the JTable 
-        JTable j = createJTable();
+        j = createJTable();
   
         // adding it to JScrollPane 
         JScrollPane sp = new JScrollPane(j); 
         sp.setLocation(10, 190);
-        sp.setSize(432, 221);
+        sp.setSize(548, 221);
         welcomePanel.add(sp);
         
-        JComboBox<?> c1 = createComboBox();
+        JComboBox c1 = createComboBox();
         welcomePanel.add(c1);
   
         // create labels 
         JLabel storeLabel = new JLabel("Select Your Store: "); 
-        storeLabel.setLocation(77, 146);
+        storeLabel.setLocation(96, 146);
         storeLabel.setSize(116, 34);
 
         welcomePanel.add(storeLabel); 
@@ -111,7 +112,7 @@ public class MainWindow extends JFrame{
 					j.setModel(SlopesDatabase.sortByColumn("ProductName"));
 				}
 			});
-        rdbtnSortName.setBounds(10, 418, 109, 23);
+        rdbtnSortName.setBounds(20, 418, 109, 23);
         welcomePanel.add(rdbtnSortName);
         
         JRadioButton rdbtnSortBrand = new JRadioButton("Sort by Brand");
@@ -120,7 +121,7 @@ public class MainWindow extends JFrame{
 					j.setModel(SlopesDatabase.sortByColumn("BrandName"));
 				}
 			});
-        rdbtnSortBrand.setBounds(173, 418, 109, 23);
+        rdbtnSortBrand.setBounds(247, 418, 109, 23);
         welcomePanel.add(rdbtnSortBrand);
         
         JRadioButton rdbtnSortPrice = new JRadioButton("Sort by price");
@@ -129,7 +130,7 @@ public class MainWindow extends JFrame{
 					j.setModel(SlopesDatabase.sortByColumn("Price"));
 				}
 			});
-        rdbtnSortPrice.setBounds(324, 418, 109, 23);
+        rdbtnSortPrice.setBounds(465, 418, 109, 23);
         welcomePanel.add(rdbtnSortPrice);
         
         ButtonGroup group = new ButtonGroup();
@@ -161,14 +162,14 @@ public class MainWindow extends JFrame{
         		}
 			}
 		});
-        btnEdit.setBounds(324, 459, 117, 29);
+        btnEdit.setBounds(457, 462, 117, 23);
 		return btnEdit;
 	}
 
 	private JLabel createStoreLogo(JPanel welcomePanel) {
 		//store logo
 		JLabel lblLogo = new JLabel("");
-		lblLogo.setBounds(122, 5, 200, 107);
+		lblLogo.setBounds(183, 11, 200, 107);
 		Image SlopeStoreLogo = new ImageIcon(this.getClass().getResource("slope_200x200.png"))
 				.getImage();
 		welcomePanel.setLayout(null);
@@ -182,14 +183,33 @@ public class MainWindow extends JFrame{
   
         //drop down
         // create checkbox 
-        JComboBox<?> c1 = new JComboBox<>(stores); 
+        JComboBox c1 = new JComboBox(stores); 
         c1.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
-        		JComboBox<?> jcb = (JComboBox<?>) arg0.getSource();
-        		JOptionPane.showMessageDialog(null, jcb.getSelectedItem().toString());
+        		JComboBox jcb = (JComboBox) arg0.getSource();
+        		
+        		switch(jcb.getSelectedItem().toString()) {
+        		  case "Sandy, UT":
+        		    j.setModel(SlopesDatabase.filterByStore(1));
+        		    break;
+        		  case "Park City, UT":
+        			  j.setModel(SlopesDatabase.filterByStore(2));
+        		    break;
+        		  case "Orem, UT":
+        			  j.setModel(SlopesDatabase.filterByStore(3));
+        			break;
+        		  case "Mammoth Lakes, CA":
+        			  j.setModel(SlopesDatabase.filterByStore(4));
+        			  break;
+        		  case "Denver, CO":
+        			  j.setModel(SlopesDatabase.filterByStore(5));
+        			  break;
+        		  default:
+        			  j.setModel(SlopesDatabase.getAllItems());
+        		}
         	}
         });
-        c1.setLocation(203, 152);
+        c1.setLocation(222, 149);
         c1.setSize(161, 28);
 		return c1;
 	}
@@ -218,7 +238,7 @@ public class MainWindow extends JFrame{
         		j.setModel(SlopesDatabase.getAllItems());
         	}
         });
-        btnUpdate.setBounds(173, 507, 89, 23);
+        btnUpdate.setBounds(247, 508, 89, 23);
 		return btnUpdate;
 	}
 
@@ -229,7 +249,7 @@ public class MainWindow extends JFrame{
         		new AddPanel(MainWindow.this);
         	}
         });
-        btnAddItem.setBounds(173, 462, 89, 23);
+        btnAddItem.setBounds(247, 462, 89, 23);
 		return btnAddItem;
 	}
 

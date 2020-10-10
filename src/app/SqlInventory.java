@@ -8,34 +8,41 @@ public class SqlInventory {
 	 */
 	public static String createTable() {
 		return "CREATE TABLE Inventory (" 
-				+ "ItemID int," 
 				+ "StoreID int," 
+				+ "ItemID int," 
 				+ "Quantity int)";
 	}
 	
 	public static String insertData() {
 		return "INSERT INTO Inventory (ItemID, StoreID, Quantity)"
-				+ "VALUES (100000, 5, 10),"
-				+ "(100001, 1, 10),"
-				+ "(100002, 2, 10),"
-				+ "(100003, 2, 10),"
-				+ "(100004, 1, 10),"
-				+ "(100005, 1, 10),"
+				+ "VALUES (100001, 1, 10),"
+				+ "(100002, 2, 12),"
+				+ "(100003, 2, 17),"
+				+ "(100004, 1, 6),"
+				+ "(100005, 1, 25),"
 				+ "(100006, 3, 10),"
 				+ "(100007, 3, 10),"
 				+ "(100008, 4, 10),"
-				+ "(100009, 5, 10)";
+				+ "(100009, 5, 10),"
+				+ "(100010, 3, 10),"
+				+ "(100011, 3, 10),"
+				+ "(100012, 4, 10),"
+				+ "(100013, 5, 10),"
+				+ "(100014, 3, 10),"
+				+ "(100015, 3, 10),"
+				+ "(100016, 4, 10),"
+				+ "(100017, 5, 10)";
 	}
 	
-	public static String getItemAndStore() {
-		return "SELECT ProductName, BrandName, Price, Size, Quantity FROM Items AS c "
+	public static String getItemAndStore(int storeNumber) {
+		return "SELECT ProductName, BrandName, Size, Price, Quantity FROM Items AS c "
 				   + "INNER JOIN "
 				   + "Inventory AS o "
 				   + "ON c.ID = o.ItemID "
 				   + "LEFT JOIN "
 				   + "Stores AS s "
 				   + "ON o.StoreID = s.ID "
-				   + "WHERE o.StoreID=2";
+				   + "WHERE o.StoreID=" + storeNumber;
 	}
 	
 	/**
