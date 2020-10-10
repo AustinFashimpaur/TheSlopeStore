@@ -29,16 +29,24 @@ public class SqlItems {
 	 */
 	public static String insertData() {
 		return "INSERT INTO Items (ProductName, BrandName, Price, Size)" 
-				+ "VALUES ('Snowboard', 'Burton', 299.99, 'L'),"
-				+ "('Snow Coat', 'Burton', 129.99, 'M')," 
+				+ "VALUES ('Custom Camber Snowboard', 'Burton', 599.99, 'L'),"
+				+ "('Throwback Snowboard', 'Burton', 149.99, 'M')," 
+				+ "('West Bound Snowboard', 'Never Summer', 599.99, 'L')," 
+				+ "('Snowshot Snow Coat', 'Patagonia', 268.99, 'M')," 
+				+ "('Cloud Bank Goretex Snow Coat', 'Mountain Hardware', 280.99, 'M')," 
 				+ "('Snow Pants', 'Burton', 89.99, 'M')," 
-				+ "('Snowboard Shoes', 'Burton', 169.99, 'L'),"
-				+ "('Snowboard Bindings', 'Burton', 79.99, 'L'),"
-				+ "('Skis', 'Burton', 349.95, 'M'),"
-				+ "('Snow Coat', 'Burton', 119.99, 'S')," 
-				+ "('Snow Pants', 'Burton', 79.99, 'S')," 
-				+ "('Ski Shoes', 'Burton', 159.99, 'M'),"
-				+ "('Ski Bindings', 'Burton', 89.99, 'M')";
+				+ "('SLX Snowboard Boots', 'Burton', 609.99, 'L'),"
+				+ "('Imperial Snowboard Boots', 'Burton', 339.99, 'M'),"
+				+ "('Sage Snowboard Boots', 'Ride', 609.99, 'L'),"
+				+ "('X Est Snowboard Bindings', 'Burton', 499.99, 'L'),"
+				+ "('Escapade Snowboard Bindings', 'Burton', 329.99, 'S'),"
+				+ "('P100 Adult Skis With Bindings', 'Rossignol', 399.99, 'M'),"
+				+ "('Deacon 76 Pro Skis', 'Voelkl', 849.99, 'M')," 
+				+ "('Enforcer 100 Skis With Bindings', 'Nordica', 629.99, 'S')," 
+				+ "('Speed Ski Boots', 'Rossignol', 179.99, 'M'),"
+				+ "('S Pro 120 Ski Boots', 'Salomon', 454.99, 'M'),"
+				+ "('Speed Machine 130 Ski Boots', 'Nordica', 489.99, 'M'),"
+				+ "('Lab Shift Ski Bindings', 'Salomon', 469.99, 'M')";
 	}
 
 	/**

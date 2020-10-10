@@ -30,12 +30,13 @@ import java.awt.event.ActionEvent;
 public class MainWindow extends JFrame{
 	//graphics variables
 	private JPanel contentPane;
+	private JTable j;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		SlopesDatabase.databaseReset();
+		SlopesDatabase.databaseInit();
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -73,7 +74,7 @@ public class MainWindow extends JFrame{
 		welcomePanel.add(lblLogo);
   
         // Initializing the JTable 
-        JTable j = createJTable();
+        j = createJTable();
   
         // adding it to JScrollPane 
         JScrollPane sp = new JScrollPane(j); 
@@ -151,8 +152,26 @@ public class MainWindow extends JFrame{
         c1.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent arg0) {
         		JComboBox jcb = (JComboBox) arg0.getSource();
-        		JOptionPane.showMessageDialog(null, jcb.getSelectedItem().toString());
-        		System.out.println(jcb.getSelectedItem());
+        		
+        		switch(jcb.getSelectedItem().toString()) {
+        		  case "Sandy, UT":
+        		    j.setModel(SlopesDatabase.filterByStore(1));
+        		    break;
+        		  case "Park City, UT":
+        			  j.setModel(SlopesDatabase.filterByStore(2));
+        		    break;
+        		  case "Orem, UT":
+        			  j.setModel(SlopesDatabase.filterByStore(3));
+        			break;
+        		  case "Mammoth Lakes, CA":
+        			  j.setModel(SlopesDatabase.filterByStore(4));
+        			  break;
+        		  case "Denver, CO":
+        			  j.setModel(SlopesDatabase.filterByStore(5));
+        			  break;
+        		  default:
+        			  j.setModel(SlopesDatabase.getAllItems());
+        		}
         	}
         });
         c1.setLocation(203, 152);
