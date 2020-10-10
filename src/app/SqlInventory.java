@@ -31,7 +31,8 @@ public class SqlInventory {
 				+ "(100014, 3, 10),"
 				+ "(100015, 3, 10),"
 				+ "(100016, 4, 10),"
-				+ "(100017, 5, 10)";
+				+ "(100017, 5, 10),"
+				+ "(100018, 5, 10)";
 	}
 	
 	public static String getItemAndStore(int storeNumber) {
