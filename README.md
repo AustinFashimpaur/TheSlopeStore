@@ -1,6 +1,6 @@
 # The Slope Store -  CSIS 2410 Project
 
-![Design preview for CSIS 2410 project.](./readmepreview.png)
+![Design preview for CSIS 2410 project.](readmepreview.PNG)
 
 ## Welcome!
 
